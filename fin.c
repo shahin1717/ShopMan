@@ -13,35 +13,55 @@ typedef struct {
 } Book;
 
 
+
+void writeBookIntoFile(FILE *file, Book book){
+
+    fprintf(file,"%s,",book.title);
+    fprintf(file,"%s,",book.author);
+    fprintf(file,"%s,",book.genre);
+    fprintf(file,"%0.2f",book.price);
+    fprintf(file,"%d",book.quantity_sale);
+    fprintf(file,"%d",book.quantity_rent);
+    fputs("\n", file);
+}
+
+
 // Function to add new books to the inventory
-void addBook(Book *inventory, int *numBooks) {
+void addBook(FILE *file, int *numBooks) {
+    Book new;
     // Prompt the user to enter book details
     printf("Enter the title: ");
-    fgets(inventory[*numBooks].title, sizeof(inventory[*numBooks].title), stdin);
-    inventory[*numBooks].title[strcspn(inventory[*numBooks].title, "\n")] = '\0'; // Remove trailing newline character
+    fgets(new.title, sizeof(new.title), stdin);
+    new.title[strcspn(new.title, "\n")] = '\0'; // Remove trailing newline character
 
     printf("Enter the author: ");
-    fgets(inventory[*numBooks].author, sizeof(inventory[*numBooks].author), stdin);
-    inventory[*numBooks].author[strcspn(inventory[*numBooks].author, "\n")] = '\0'; // Remove trailing newline character
+    fgets(new.author, sizeof(new.author), stdin);
+    new.author[strcspn(new.author, "\n")] = '\0'; // Remove trailing newline character
 
     printf("Enter the genre: ");
-    fgets(inventory[*numBooks].genre, sizeof(inventory[*numBooks].genre), stdin);
-    inventory[*numBooks].genre[strcspn(inventory[*numBooks].genre, "\n")] = '\0'; // Remove trailing newline character
+    fgets(new.genre, sizeof(new.genre), stdin);
+    new.genre[strcspn(new.genre, "\n")] = '\0'; // Remove trailing newline character
 
+    // TODO: catch error here
     printf("Enter the price: ");
-    scanf("%f", &inventory[*numBooks].price);
+    scanf("%f", &new.price);
 
+    // TODO: catch error here
     printf("Enter the quantity for sale: ");
-    scanf("%d", &inventory[*numBooks].quantity_sale);
+    scanf("%d", &new.quantity_sale);
 
+    // TODO: catch error here
     printf("Enter the quantity for rent: ");
-    scanf("%d", &inventory[*numBooks].quantity_rent);
+    scanf("%d", &new.quantity_rent);
 
     (*numBooks)++; // Increment the number of books in the inventory
 
+    writeBookIntoFile(file, new);
     printf("Book added successfully.\n");
 }
-    // TODO: Implement the logic to add a new book to the inventory
+
+
+
 
 // Function to update book details
 void updateBook(Book *inventory, int numBooks) {
@@ -217,6 +237,8 @@ void rentBook(Book *inventory, int numBooks) {
     }
 }
 
+// bring back the book
+
 void generateSalesReport(Book *inventory, int numBooks) {
     // Display sales report header
     printf("Sales Report\n");
@@ -257,15 +279,27 @@ void displayMenu() {
     printf("6. Rent Book\n");
     printf("7. Generate Sales Report\n");
     printf("8. Generate Rental Report\n");
+    // browse
     printf("9. Exit\n");
     printf("Enter your choice: ");
 }
 
 int main() {
-    Book inventory[100]; // Assuming a maximum of 100 books in the inventory
-    int numBooks = 0;
-    int choice;
+    // Book inventory[100]; // Assuming a maximum of 100 books in the inventory
+    FILE *inventoryToWrite;
+    FILE *inventoryToRead;
+    inventoryToWrite = fopen("inventory.txt","ab");
+    inventoryToRead = fopen("inventory.txt", "r");
 
+    // Counts the initial number of books(line in a file) in inventory before starting the operations
+    int numBooks = 0;
+    char c;
+    for (c = getc(inventoryToRead); c != EOF; c = getc(inventoryToRead))
+        if (c == '\n') // Increment count if this character is newline
+            numBooks = numBooks + 1;
+
+
+    int choice;
     do {
         displayMenu();
         scanf("%d", &choice);
@@ -273,29 +307,30 @@ int main() {
 
         switch (choice) {
             case 1:
-                addBook(inventory, &numBooks);
+                addBook(inventoryToWrite, &numBooks);
                 break;
-            case 2:
-                updateBook(inventory, numBooks);
-                break;
-            case 3:
-                getBookInfo(inventory, numBooks);
-                break;
-            case 4:
-                processSale(inventory, numBooks);
-                break;
-            case 5:
-                printf("Total amount: %.2f\n", calculateTotalAmount(inventory, numBooks));
-                break;
-            case 6:
-                rentBook(inventory, numBooks);
-                break;
-            case 7:
-                generateSalesReport(inventory, numBooks);
-                break;
-            case 8:
-                generateRentalReport(inventory, numBooks);
-                break;
+            // case 2:
+            //     updateBook(inventory, numBooks);
+            //     break;
+            // case 3:
+            //     getBookInfo(inventory, numBooks);
+            //     break;
+            // case 4:
+            //     processSale(inventory, numBooks);
+            //     break;
+            // case 5:
+            //     printf("Total amount: %.2f\n", calculateTotalAmount(inventory, numBooks));
+            //     break;
+            // case 6:
+            //     rentBook(inventory, numBooks);
+            //     break;
+            // case 7:
+            //     generateSalesReport(inventory, numBooks);
+            //     break;
+            // case 8:
+            //     generateRentalReport(inventory, numBooks);
+            //     break;
+            // browse
             case 9:
                 printf("Exiting...\n");
                 break;
@@ -305,5 +340,7 @@ int main() {
         }
     } while (choice != 9);
 
+    fclose(inventoryToWrite);
+    fclose(inventoryToRead);
     return 0;
 }
