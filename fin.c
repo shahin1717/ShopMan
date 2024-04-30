@@ -4,6 +4,7 @@
 
 // Define data structure for books
 typedef struct {
+    int id;
     char title[100];
     char author[100];
     char genre[50];
@@ -13,21 +14,24 @@ typedef struct {
 } Book;
 
 
+// writes Book structure in the end of the inventory file
+void writeBookIntoFile(FILE *file, Book book,int index){
 
-void writeBookIntoFile(FILE *file, Book book){
+    fputs("#\n", file); // separator between books
+    fprintf(file,"%d: %s\n",index,book.title);
+    fprintf(file,"%d.1: %s\n",index,book.author);
+    fprintf(file,"%d.2: %s\n",index,book.genre);
+    fprintf(file,"%d.3: %0.2f\n",index,book.price);
+    fprintf(file,"%d.4: %d\n",index,book.quantity_sale);
+    fprintf(file,"%d.5: %d\n",index,book.quantity_rent);
 
-    fprintf(file,"%s,",book.title);
-    fprintf(file,"%s,",book.author);
-    fprintf(file,"%s,",book.genre);
-    fprintf(file,"%0.2f",book.price);
-    fprintf(file,"%d",book.quantity_sale);
-    fprintf(file,"%d",book.quantity_rent);
-    fputs("\n", file);
 }
 
 
 // Function to add new books to the inventory
-void addBook(FILE *file, int *numBooks) {
+void addBook(char *fileName,int *numBooks) {
+    int index = *numBooks + 1;
+    // temporary book to store user input
     Book new;
     // Prompt the user to enter book details
     printf("Enter the title: ");
@@ -42,9 +46,13 @@ void addBook(FILE *file, int *numBooks) {
     fgets(new.genre, sizeof(new.genre), stdin);
     new.genre[strcspn(new.genre, "\n")] = '\0'; // Remove trailing newline character
 
-    // TODO: catch error here
-    printf("Enter the price: ");
-    scanf("%f", &new.price);
+    
+    float price = -1;
+    while (price = -1){
+        printf("Enter the price: ");
+        scanf(" %f", &new.price);
+    }
+
 
     // TODO: catch error here
     printf("Enter the quantity for sale: ");
@@ -54,57 +62,162 @@ void addBook(FILE *file, int *numBooks) {
     printf("Enter the quantity for rent: ");
     scanf("%d", &new.quantity_rent);
 
-    (*numBooks)++; // Increment the number of books in the inventory
+    
 
-    writeBookIntoFile(file, new);
+    FILE * file = fopen("inventory.txt","a");
+    writeBookIntoFile(file, new, index);
+    fclose(file);
+
+    (*numBooks)++; // Increment the number of books in the inventory
     printf("Book added successfully.\n");
 }
 
 
+// returns TITLE from 1: TITLE
+//         AUTHOR from 1.1: AUTHOR
+char* extractStringFromLine(char *line){
+    
+    char *sepPosition = strchr(line, ':');
+    if (sepPosition != NULL) {
+        // Move the pointer after the colon to get the title
+        char *titleStart = sepPosition + 1;
 
+        // Remove leading and trailing spaces
+        while (*titleStart == ' ' || *titleStart == '\t') {
+            titleStart++;
+        }
 
-// Function to update book details
-void updateBook(Book *inventory, int numBooks) {
+        // Find the end of the title
+        char *titleEnd = strchr(titleStart, '\n');
+        if (titleEnd != NULL) {
+            *titleEnd = '\0'; // Null-terminate the title
+        }
+        return titleStart;
+        printf("Clean title: %s\n", titleStart);
+    }
+
+}
+
+void makeChanges(char *file, int index, Book book) {
+    FILE *temp = fopen("temp.txt", "w");
+    FILE *initial = fopen(file, "r");
+    if (temp == NULL || initial == NULL) {
+        perror("Error opening file");
+        return;
+    }
+
+    char buffer[255];
+    int i = 0;
+    while (fgets(buffer, sizeof(buffer), initial) != NULL) {
+        if (strcmp(buffer, "#\n") == 0) {
+            i++;
+            if (i >= index) {
+                break;
+            }
+        }
+        fprintf(temp, "%s", buffer);
+    }
+
+    writeBookIntoFile(temp, book, index);
+
+    for (int k = 0; k < 6; k++) {
+        if (fgets(buffer, sizeof(buffer), initial) == NULL) {
+            break; // Exit loop if end of file is reached prematurely
+        }
+    }
+
+    while (fgets(buffer, sizeof(buffer), initial) != NULL) {
+        fprintf(temp, "%s", buffer);
+    }
+
+    fclose(temp);
+    fclose(initial);
+
+    FILE *updated = fopen(file, "w");
+    FILE *tempp = fopen("temp.txt", "r");
+    if (updated == NULL || tempp == NULL) {
+        perror("Error opening file");
+        return;
+    }
+
+    while (fgets(buffer, sizeof(buffer), tempp) != NULL) {
+        fprintf(updated, "%s", buffer);
+    }
+
+    fclose(updated);
+    fclose(tempp);
+
+    remove("temp.txt");
+}
+
+// Function to update(change) book details
+void updateBook(char *filename) {
     char searchTitle[100];
-    int found = 0;
-
     printf("Enter the title of the book to update: ");
     fgets(searchTitle, sizeof(searchTitle), stdin);
     searchTitle[strcspn(searchTitle, "\n")] = '\0'; // Remove trailing newline character
 
-    // Search for the book in the inventory
-    for (int i = 0; i < numBooks; i++) {
-        if (strcmp(inventory[i].title, searchTitle) == 0) {
-            found = 1;
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        return;
+    }
 
-            // Prompt the user to update book details
-            printf("Enter the new author: ");
-            fgets(inventory[i].author, sizeof(inventory[i].author), stdin);
-            inventory[i].author[strcspn(inventory[i].author, "\n")] = '\0'; // Remove trailing newline character
+    int found = 0;
+    int index = 0; // which book is it
+    char *foundtitle;
+    Book temp;
 
-            printf("Enter the new genre: ");
-            fgets(inventory[i].genre, sizeof(inventory[i].genre), stdin);
-            inventory[i].genre[strcspn(inventory[i].genre, "\n")] = '\0'; // Remove trailing newline character
+    char buffer[255];
+    while (fgets(buffer, sizeof(buffer), file) != NULL) {
+        if (strcmp(buffer, "#\n") == 0) {
+            index++;
 
-            printf("Enter the new price: ");
-            scanf("%f", &inventory[i].price);
+            fgets(buffer, sizeof(buffer), file); // Read the title line
+            searchTitle[strcspn(searchTitle, "\n")] = '\0';
+            char *foundtitle = extractStringFromLine(buffer);
+            foundtitle[strcspn(foundtitle, "\n")] = '\0';
 
-            printf("Enter the new quantity for sale: ");
-            scanf("%d", &inventory[i].quantity_sale);
+            if (foundtitle != NULL && strcmp(foundtitle, searchTitle) == 0) {
 
-            printf("Enter the new quantity for rent: ");
-            scanf("%d", &inventory[i].quantity_rent);
+                found = 1;
+                fflush(stdin);
 
-            printf("Book details updated successfully.\n");
-            break;
+                strcpy(temp.title, searchTitle);
+                // Prompt the user to update book details
+                printf("Enter the new author: ");
+                fgets(temp.author, sizeof(temp.author), stdin);
+                temp.author[strcspn(temp.author, "\n")] = '\0'; // Remove trailing newline character
+
+                printf("Enter the new genre: ");
+                fgets(temp.genre, sizeof(temp.genre), stdin);
+                temp.genre[strcspn(temp.genre, "\n")] = '\0'; // Remove trailing newline character
+
+                printf("Enter the new price: ");
+                scanf("%f", &temp.price);
+
+                printf("Enter the new quantity for sale: ");
+                scanf("%d", &temp.quantity_sale);
+
+                printf("Enter the new quantity for rent: ");
+                scanf("%d", &temp.quantity_rent);
+                fclose(file);
+
+                makeChanges(filename, index, temp);
+
+                printf("Book details updated successfully.\n");
+                return; // Exit the function after updating the book
+            }
         }
     }
 
+    fclose(file);
     if (!found) {
-        printf("Book not found in the inventory.\n");
+        printf("Book not found.\n");
     }
+    
 }
-    // TODO: Implement the logic to update book details
+
 
 
 // Function to retrieve book information
@@ -237,7 +350,7 @@ void rentBook(Book *inventory, int numBooks) {
     }
 }
 
-// bring back the book
+// bring back the book (opposite of renting)
 
 void generateSalesReport(Book *inventory, int numBooks) {
     // Display sales report header
@@ -285,19 +398,26 @@ void displayMenu() {
 }
 
 int main() {
+    // not absolute address
+    char *fileName = "inventory.txt";
+
     // Book inventory[100]; // Assuming a maximum of 100 books in the inventory
-    FILE *inventoryToWrite;
-    FILE *inventoryToRead;
-    inventoryToWrite = fopen("inventory.txt","ab");
-    inventoryToRead = fopen("inventory.txt", "r");
 
     // Counts the initial number of books(line in a file) in inventory before starting the operations
     int numBooks = 0;
-    char c;
-    for (c = getc(inventoryToRead); c != EOF; c = getc(inventoryToRead))
-        if (c == '\n') // Increment count if this character is newline
-            numBooks = numBooks + 1;
 
+    FILE *inventoryFile = fopen("inventory.txt","r+"); // r+ for both reading and writing
+    if (inventoryFile == NULL) {
+        perror("Error opening file");
+        return 1;
+    }
+    char buffer[255];
+    while(fgets(buffer, 255, inventoryFile) != NULL){
+        if (strcmp(buffer, "#\n") == 0){
+            numBooks ++;
+        } 
+    }
+    fclose(inventoryFile);
 
     int choice;
     do {
@@ -307,11 +427,11 @@ int main() {
 
         switch (choice) {
             case 1:
-                addBook(inventoryToWrite, &numBooks);
+                addBook(fileName, &numBooks);
                 break;
-            // case 2:
-            //     updateBook(inventory, numBooks);
-            //     break;
+            case 2:
+                updateBook("inventory.txt");
+                break;
             // case 3:
             //     getBookInfo(inventory, numBooks);
             //     break;
@@ -338,9 +458,10 @@ int main() {
                 printf("Invalid choice. Please try again.\n");
                 break;
         }
-    } while (choice != 9);
 
-    fclose(inventoryToWrite);
-    fclose(inventoryToRead);
+        fflush(stdin); // after user inut a number they also input \n, get rid of it
+
+    } while (choice != 9);
+  
     return 0;
 }
