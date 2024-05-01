@@ -1,45 +1,25 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <stdio.h> 
+#include <string.h> 
 
-char* extractStringfromLine(const char* line);
+char* extract(char *line);
+ 
+int main() { 
+    char line[] = "12.4: TITLE";
+    printf("%s", extract(line));
+    return 0; 
+} 
 
-int main(){
-    printf("%s", extractStringfromLine("12.45: hello loxes"));
-    return 0;
-}
+char* extract(char *line){
+    
+    const char delimiter[] = ": "; 
+ 
+    char *token = strtok(line, delimiter); 
+ 
+    if (token != NULL) { 
+        // printf("%s\n", token); 
+        return (strtok(NULL, delimiter)); 
 
-char* extractStringfromLine(const char *line){
-    char *token;
+    } 
 
-    // Get the first token
-    token = strtok((char*)line, ": ");
-
-    // Allocate memory for the token
-    char *result = NULL;
-    if (token != NULL) {
-        result = malloc(strlen(token) + 1); // +1 for null terminator
-        if (result != NULL) {
-            strcpy(result, token);
-        }
-    }
-
-    // Traverse through other tokens
-    while (token != NULL) {
-        token = strtok(NULL, ": "); // Passing NULL tells strtok to continue from the previous string
-        if (token != NULL) {
-            // Reallocate memory to include the new token
-            result = realloc(result, strlen(result) + strlen(token) + 2); // +2 for colon and null terminator
-            if (result != NULL) {
-                strcat(result, ":"); // Add colon
-                strcat(result, token); // Add token
-            } else {
-                // Memory allocation failed, free the previously allocated memory
-                free(result);
-                return NULL;
-            }
-        }
-    }
-
-    return result;
+    return NULL;
 }
