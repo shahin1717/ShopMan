@@ -1,17 +1,3 @@
 # Ignore compiled files
-*.class
 *.o
 *.out
-
-# Ignore build directories
-/build/
-
-del.c
-dump.c
-extract.c
-fin.c
-makechangestest.c
-test.c
-time.c
-updatebooktest.c
-words.txt
