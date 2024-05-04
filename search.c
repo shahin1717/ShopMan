@@ -35,7 +35,6 @@ void writeBookIntoFile(FILE *file, Book book,int index){
 
 }
 
-
 // Function to add new books to the inventory
 void addBook(char *fileName,int *numBooks) {
     
@@ -282,6 +281,8 @@ void getBookInfo(char *filename, int numBooks) {
     
 }
 
+
+
 // writes into sale file, where all transactions are stored
 void generateSalesReport(char* filename, Book book, int quantity) {
     FILE *file = fopen(filename, "a");
@@ -484,6 +485,7 @@ void displaySaleReport(char *filename){
 }
 
 
+
 // writes into rent file, where all transactions are stored
 void generateRentalReport(char* filename, Book book, int quantity, char *date, int days) {
     FILE *file = fopen(filename, "a");
@@ -668,16 +670,27 @@ void displayRentalReport(char *filename){
 }
 
 
-//TODO // bring back the book (opposite of renting)
-void returnRented(){
 
+void fillTemp(Book *book, char *title, char *author, char *genre, float price, int sell, int rent){
+    strcpy(book->title, title);
+    strcpy(book->author, author);
+    strcpy(book->genre, genre);
+    book->price = price;
+    book->quantity_sale = sell;
+    book->quantity_rent = rent;
 }
 
-
 void sort13(char *filename, char *tofind, char ag ){
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
+    FILE *inventory = fopen(filename, "r");
+
+    if (inventory == NULL) {
         printf("Error opening file.\n");
+        return;
+    }
+
+    FILE *fake = fopen("fake.txt", "a");
+    if (fake == NULL) {
+        printf("Error opening fake file.\n");
         return;
     }
 
@@ -691,31 +704,43 @@ void sort13(char *filename, char *tofind, char ag ){
 
     int found = 0; // Flag to indicate if any books are found for the given author
 
-    while (fgets(buffer, sizeof(buffer), file) != NULL) {
+    while (fgets(buffer, sizeof(buffer), inventory) != NULL) {
         if (strcmp(buffer, "#\n") == 0) {
-            fgets(title, sizeof(title), file); // Read title
+            fgets(title, sizeof(title), inventory); // Read title
             title[strcspn(title, "\n")] = '\0';
             strcpy(title,extractStringFromLine(title));
 
-            fgets(author, sizeof(author), file); // Read author
+            fprintf(fake, "%s\n", title);
+
+            fgets(author, sizeof(author), inventory); // Read author
             author[strcspn(author, "\n")] = '\0';
             strcpy(author,extractStringFromLine(author));
 
-            fgets(genre, sizeof(genre), file); // Read genre
+            fprintf(fake, "%s\n", author);
+
+            fgets(genre, sizeof(genre), inventory); // Read genre
             genre[strcspn(genre, "\n")] = '\0';
             strcpy(genre,extractStringFromLine(genre));
 
-            fgets(price, sizeof(price), file); // Read price
+            fprintf(fake, "%s\n", genre);
+
+            fgets(price, sizeof(price), inventory); // Read price
             price[strcspn(price, "\n")] = '\0';
             strcpy(price,extractStringFromLine(price));
 
-            fgets(quantity_sale, sizeof(quantity_sale), file); // Read quant sale
+            fprintf(fake, "%s\n", price);
+
+            fgets(quantity_sale, sizeof(quantity_sale), inventory); // Read quant sale
             quantity_sale[strcspn(quantity_sale, "\n")] = '\0';
             strcpy(quantity_sale,extractStringFromLine(quantity_sale));
+
+            fprintf(fake, "%s\n", quantity_sale);
             
-            fgets(quantity_rent, sizeof(quantity_rent), file); // Read price
+            fgets(quantity_rent, sizeof(quantity_rent), inventory); // Read sell quantity
             quantity_rent[strcspn(quantity_rent, "\n")] = '\0';
             strcpy(quantity_rent,extractStringFromLine(quantity_rent));
+
+            fprintf(fake, "%s\n", quantity_rent);
 
             if ((ag == 'a' && strcmp(author, tofind) == 0) || (ag == 'g' && strcmp(genre, tofind) == 0)){
 
@@ -728,16 +753,125 @@ void sort13(char *filename, char *tofind, char ag ){
                 printf("_________________________\n");
                 found = 1;
             }
-
         }
     }
 
-    fclose(file);
+    // if this function was call for author or genre and it failed to find any book
+    if(ag == 'a' || ag == 'g'){
+        if (!found) {
+            printf("No books found for the given paramether.\n");
+        }
 
-    if (!found) {
-        printf("No books found for the given author.\n");
+        fclose(inventory); // we wont touch inventory any more
+        fclose(fake);
+        remove("fake.txt");
+        return;
     }
+
+    // if fucntion was called for price sorting
+    else{
+        int p; //price
+        int s; // sell
+        int r; // rent
+
+        fclose(inventory); // we wont touch inventory any more
+        fclose(fake); // fake version of inventory which we will delete books from
+
+        int smallest;
+        int smallest_index;
+        Book temp_book;
+
+        for (int i = 0; i < numBooks; i++){
+            // for each book
+            FILE *fake = fopen("fake.txt", "r");
+
+            for (int j = 0; j < numBooks-i; j++){
+                fgets(title, sizeof(title), fake);
+                title[strcspn(title, "\n")] = '\0';
+
+                fgets(author, sizeof(author), fake); // Read author
+                author[strcspn(author, "\n")] = '\0';
+
+                fgets(genre, sizeof(genre), fake); // Read genre
+                genre[strcspn(genre, "\n")] = '\0';
+
+                fgets(price, sizeof(price), fake); // Read price
+                price[strcspn(price, "\n")] = '\0';
+                p = atof(price);
+
+                // first element is orientier for finding smallest
+                if(j == 0){
+                    smallest = p; // smallest price
+                    smallest_index = j;
+
+                    fgets(quantity_sale, sizeof(quantity_sale), fake); // Read quant sale
+                    quantity_sale[strcspn(quantity_sale, "\n")] = '\0';
+                    s = atoi(quantity_sale);
+
+                    fgets(quantity_rent, sizeof(quantity_rent), fake); // Read rent quantity
+                    quantity_rent[strcspn(quantity_rent, "\n")] = '\0';
+                    r = atoi(quantity_rent);
+
+                    fillTemp(&temp_book, title, author, genre, p, s, r);
+                }
+                else if(p<smallest){
+                    smallest = p;
+
+                    fgets(quantity_sale, sizeof(quantity_sale), fake); // Read quant sale
+                    quantity_sale[strcspn(quantity_sale, "\n")] = '\0';
+                    s = atoi(quantity_sale);
+
+                    fgets(quantity_rent, sizeof(quantity_rent), fake); // Read sell quantity
+                    quantity_rent[strcspn(quantity_rent, "\n")] = '\0';
+                    r = atoi(quantity_rent);
+
+                    fillTemp(&temp_book, title, author, genre, p, s, r);
+
+                    smallest_index = j;
+                }
+            }
+
+            // print smallest
+            printf("___________________\n");
+            printf("%s\n", temp_book.title);
+            printf("%s\n", temp_book.author);
+            printf("%s\n", temp_book.genre);
+            printf("%f\n", temp_book.price);
+            printf("%d\n", temp_book.quantity_sale);
+            printf("%d", temp_book.quantity_rent);
+            printf("___________________\n");
+
+            fclose(fake);
+
+            // delete from fake
+            FILE *helper = fopen("helper.txt", "a"); //append
+            FILE *fakee = fopen("fake.txt", "r"); //read
+
+
+            for (int k = 0; k < smallest_index*6; k++){
+                fgets(buffer, sizeof(buffer), fakee);
+                fprintf(helper, "%s", buffer);
+            }
+
+            // dont copy book at smallest index, go throu it without copying into helper
+            for (int s = 0; s < 6; s++){
+                fgets(buffer, sizeof(buffer), fakee);
+            }
+
+            while(fgets(buffer, sizeof(buffer), fakee)!= NULL){
+                fprintf(helper, "%s", buffer);
+            }
+
+            fclose(helper);
+            fclose(fakee);
+            remove("fake.txt");
+            rename ("helper.txt", "fake.txt");
+
+        }
+    }
+    remove("fake.txt");
 }
+
 
 void browse(char *filename){
     int choice;
@@ -756,21 +890,19 @@ void browse(char *filename){
 
     switch (choice) {
         case 1:
-            
             printf("Which author's book you want?: ");
             fgets(author, sizeof(author), stdin);
             author[strcspn(author, "\n")] = '\0';
             sort13(filename, author,'a');
             break;   
-
-        // case 2:
-        //     sortPrice(filename, &numBooks);
-        //     break;
-        
+        case 2:
+            sort13(filename, " ", 'p');
+            break;
         case 3:
             printf("Which genre book you want?: ");
             fgets(genre, sizeof(genre), stdin);
             genre[strcspn(genre, "\n")] = '\0';
+
             sort13(filename, genre, 'g');
             break;
         default:
@@ -868,4 +1000,5 @@ int main() {
     } while (choice != 9);
   
     return 0;
+
 }
