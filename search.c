@@ -668,12 +668,116 @@ void displayRentalReport(char *filename){
 }
 
 
-
-
-
 //TODO // bring back the book (opposite of renting)
 void returnRented(){
 
+}
+
+
+void sort13(char *filename, char *tofind, char ag ){
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Error opening file.\n");
+        return;
+    }
+
+    char buffer[255];
+    char title[255];
+    char author[255];
+    char genre[255];
+    char price[255];
+    char quantity_sale[255];
+    char quantity_rent[255];
+
+    int found = 0; // Flag to indicate if any books are found for the given author
+
+    while (fgets(buffer, sizeof(buffer), file) != NULL) {
+        if (strcmp(buffer, "#\n") == 0) {
+            fgets(title, sizeof(title), file); // Read title
+            title[strcspn(title, "\n")] = '\0';
+            strcpy(title,extractStringFromLine(title));
+
+            fgets(author, sizeof(author), file); // Read author
+            author[strcspn(author, "\n")] = '\0';
+            strcpy(author,extractStringFromLine(author));
+
+            fgets(genre, sizeof(genre), file); // Read genre
+            genre[strcspn(genre, "\n")] = '\0';
+            strcpy(genre,extractStringFromLine(genre));
+
+            fgets(price, sizeof(price), file); // Read price
+            price[strcspn(price, "\n")] = '\0';
+            strcpy(price,extractStringFromLine(price));
+
+            fgets(quantity_sale, sizeof(quantity_sale), file); // Read quant sale
+            quantity_sale[strcspn(quantity_sale, "\n")] = '\0';
+            strcpy(quantity_sale,extractStringFromLine(quantity_sale));
+            
+            fgets(quantity_rent, sizeof(quantity_rent), file); // Read price
+            quantity_rent[strcspn(quantity_rent, "\n")] = '\0';
+            strcpy(quantity_rent,extractStringFromLine(quantity_rent));
+
+            if ((ag == 'a' && strcmp(author, tofind) == 0) || (ag == 'g' && strcmp(genre, tofind) == 0)){
+
+                printf("Title: %s\n", title);
+                printf("Author: %s\n", author);
+                printf("Genre: %s\n", genre);
+                printf("Price: %s\n", price);
+                printf("Quantity for sale: %s\n", quantity_sale);
+                printf("Quantity for rent: %s\n", quantity_rent);
+                printf("_________________________\n");
+                found = 1;
+            }
+
+        }
+    }
+
+    fclose(file);
+
+    if (!found) {
+        printf("No books found for the given author.\n");
+    }
+}
+
+void browse(char *filename){
+    int choice;
+    char author[255];
+    char genre [255];
+
+    printf("Sort by:\n");
+    printf("1. Author\n");
+    printf("2. Price (increasing)\n");
+    printf("3. Genre\n");
+
+    printf("Enter your choice: ");
+
+    scanf("%d", &choice);
+    getchar(); // Consume the newline character
+
+    switch (choice) {
+        case 1:
+            
+            printf("Which author's book you want?: ");
+            fgets(author, sizeof(author), stdin);
+            author[strcspn(author, "\n")] = '\0';
+            sort13(filename, author,'a');
+            break;   
+
+        // case 2:
+        //     sortPrice(filename, &numBooks);
+        //     break;
+        
+        case 3:
+            printf("Which genre book you want?: ");
+            fgets(genre, sizeof(genre), stdin);
+            genre[strcspn(genre, "\n")] = '\0';
+            sort13(filename, genre, 'g');
+            break;
+        default:
+            printf("Invalid input!");
+            browse(filename);
+            return;
+    }
 }
 
 void displayMenu() {
@@ -684,10 +788,11 @@ void displayMenu() {
     printf("3. Get Book Information\n");
     printf("4. Process Sale\n");
     printf("5. Rent Book\n");
-    printf("6. Browse Books\n");
-    printf("7. Display Sales Report\n");
-    printf("8. Display Rental Report\n");
-    printf("9. Exit\n");
+    printf("6: Return Rented Book\n");
+    printf("7. Browse Books\n");
+    printf("8. Display Sales Report\n");
+    printf("9. Display Rental Report\n");
+    printf("10. Exit\n");
     printf("Enter your choice: ");
 }
 
@@ -738,15 +843,19 @@ int main() {
                 processRent(fileName, rentFileName);
                 break;
             //case 6:
-            //    browse(fileName);
+            //    returnRent(fileName);
             //    break;
             case 7:
-                displaySaleReport(saleFileName);
+                browse(fileName);
                 break;
             case 8:
+                displaySaleReport(saleFileName);
+                break;
+                
+            case 9:
                 displayRentalReport(rentFileName);
                 break;
-            case 9:
+            case 10:
                 printf("Exiting...\n");
                 break;
             default:
