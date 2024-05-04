@@ -450,6 +450,7 @@ void processRent(char *filename, char *rentFileName) {
     strcpy(author, buffer);
     strcpy(author,extractStringFromLine(buffer));
 
+
     fgets(buffer, sizeof(buffer), file); //genre
     buffer[strcspn(buffer, "\n")] = '\0';
     char genre[255];
