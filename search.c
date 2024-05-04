@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 // Define data structure for books
 typedef struct {
@@ -12,7 +13,6 @@ typedef struct {
     int quantity_sale;
     int quantity_rent;
 } Book;
-
 
 // writes Book structure in the end of the inventory file
 void writeBookIntoFile(FILE *file, Book book,int index){
@@ -152,7 +152,6 @@ void makeChanges(char *file, int index, Book book) {
 
 int searchBook(FILE* file, char *searchTitle){
     
-
     int found = 0;
     int index = 0; // which book is it
     char *foundtitle;
@@ -245,6 +244,9 @@ void getBookInfo(char *filename, int numBooks) {
 
      char buffer[255];
 
+    printf("_________________________\n");
+
+
     printf("Title: %s\n", searchTitle);
 
     fgets(buffer, sizeof(buffer), file); // Read the next line (author line)
@@ -268,12 +270,31 @@ void getBookInfo(char *filename, int numBooks) {
     char *rent = extractStringFromLine(buffer);
     printf("Quantity for rent: %s\n", rent);
 
+    printf("_________________________\n");
+
     fclose(file);
     
 }
 
-// Function to process book sales transactions
-void processSale(char *filename) {
+// writes into sale file, where all transactions are stored
+void generateSalesReport(char* filename, Book book, int quantity) {
+    FILE *file = fopen(filename, "a");
+
+    fprintf(file,"%s\n",book.title);
+    fprintf(file,"%s\n",book.author);
+    // fprintf(file,"%s\n",book.genre);
+    fprintf(file,"%d\n",quantity); // Quantity sold
+    fprintf(file,"%f\n",book.price * quantity);  // total price
+
+    // in case if in future price of the book will change
+    // these wont be any problem in the code, as report was generated right after selling
+
+    fclose (file);
+    
+}
+
+// Function to process book sales
+void processSale(char *filename, char *sellFileName) {
     char searchTitle[100];
     char buffer[255];
 
@@ -288,17 +309,15 @@ void processSale(char *filename) {
     if (index == -1){
         printf("Book not found in the inventory.\n");
     }
+    return;
 
-    fgets(buffer, sizeof(buffer), file);  //auther
+    fgets(buffer, sizeof(buffer), file);  //author
     buffer[strcspn(buffer, "\n")] = '\0';
     char author[255];
-    strcpy(author, buffer);
     strcpy(author,extractStringFromLine(buffer));
-
     fgets(buffer, sizeof(buffer), file); //genre
     buffer[strcspn(buffer, "\n")] = '\0';
     char genre[255];
-    strcpy(author, buffer);
     strcpy(genre,extractStringFromLine(buffer));
 
     fgets(buffer, sizeof(buffer), file); // price
@@ -318,6 +337,11 @@ void processSale(char *filename) {
     fclose(file);
 
 
+    if (sell == 0){
+        printf("Not in stock.\n");
+        return;
+    }
+
     int quantity;
     printf("Enter the quantity to sell: ");
     scanf("%d", &quantity);
@@ -333,55 +357,81 @@ void processSale(char *filename) {
         temp.quantity_sale = sell - quantity;
         temp.quantity_rent = atof(buffer);
 
-
         makeChanges(filename,index, temp);
 
-        // TODO sales file
+        generateSalesReport(sellFileName, temp, quantity);
 
         printf("Sale processed successfully.\n");
+
+        // Как чек чтобы вывело плз
+        printf("______чек(?)_______");
+        printf("%s", searchTitle);
+        printf("%s", author);
+        printf("%f", price); 
+        printf("%d", quantity);
+        printf("%f", price*quantity); // total
+
     } 
     else {
         printf("Insufficient quantity in stock.\n");
+        printf("There are only %d in the stock\n", sell);
         return;
     }
 }
 
-float calculateTotalAmount(Book *inventory, int numBooks) {
-    char searchTitle[100];
-    int found = 0;
-    float totalAmount = 0.0;
+void displaySaleReport(char *filename){
+    FILE *file = fopen(filename, "r");
+    // Display sales report header
+    printf("Sales Report\n");
+    printf("------------\n");
+    float total_rev = 0;
 
-    printf("Enter the title of the book to calculate total amount: ");
-    fgets(searchTitle, sizeof(searchTitle), stdin);
-    searchTitle[strcspn(searchTitle, "\n")] = '\0'; // Remove trailing newline character
-
-    // Search for the book in the inventory
-    for (int i = 0; i < numBooks; i++) {
-        if (strcmp(inventory[i].title, searchTitle) == 0) {
-            found = 1;
-
-            int quantity;
-            printf("Enter the quantity to calculate total amount: ");
-            scanf("%d", &quantity);
-
-            // Calculate total amount payable
-            totalAmount = inventory[i].price * quantity;
-            break;
-        }
-    }
-
-    if (!found) {
-        printf("Book not found in the inventory.\n");
-    }
-
-    return totalAmount;
-}
-
-void rentBook(char *filename) {
-    char searchTitle[100];
     char buffer[255];
 
-    printf("Enter the title of the book to process sale: ");
+    while (fgets(buffer, sizeof(buffer), file) != NULL) {
+        printf("Title: %s", buffer);
+        fgets(buffer, sizeof(buffer), file);
+        printf("Author: %s", buffer);
+        fgets(buffer, sizeof(buffer), file);
+        printf("Quantity sold: %s", buffer);
+        fgets(buffer, sizeof(buffer), file);
+        printf("Total sales amount: %s", buffer);
+        total_rev += atof(buffer);
+        printf("------------\n");
+    }
+
+    printf("Total rev: %f", total_rev);
+    // printf("Best selling book: %s", title);
+
+    
+}
+
+
+// writes into rent file, where all transactions are stored
+void generateRentalReport(char* filename, Book book, int quantity, char *date) {
+    FILE *file = fopen(filename, "a");
+
+    fprintf(file,"%s\n",book.title);
+    fprintf(file,"%s\n",book.author);
+    // fprintf(file,"%s\n",book.genre);
+    fprintf(file,"%d\n",quantity); // Quantity sold
+    fprintf(file,"%f\n",book.price * quantity);  // total price
+    fprintf(file,"%s\n", date);
+
+    // in case if in future price of the book will change
+    // these wont be any problem in the code, as report was generated right after selling
+
+    fclose (file);   
+}
+
+
+void processRent(char *filename, char *rentFileName) {
+    char searchTitle[100];
+    char buffer[255];
+    int BUF_LEN = 255;
+    
+
+    printf("Enter the title of the book to process rent: ");
     fgets(searchTitle, sizeof(searchTitle), stdin);
     searchTitle[strcspn(searchTitle, "\n")] = '\0'; // Remove trailing newline character
 
@@ -391,9 +441,10 @@ void rentBook(char *filename) {
 
     if (index == -1){
         printf("Book not found in the inventory.\n");
+        return;
     }
 
-    fgets(buffer, sizeof(buffer), file);  //auther
+    fgets(buffer, sizeof(buffer), file);  //author
     buffer[strcspn(buffer, "\n")] = '\0';
     char author[255];
     strcpy(author, buffer);
@@ -419,7 +470,8 @@ void rentBook(char *filename) {
     buffer[strcspn(buffer, "\n")] = '\0';
     char *crent = extractStringFromLine(buffer);
     int rent = atof(crent) ;
-    printf("%d", rent);
+    // printf("%d", rent);
+
     fclose(file);
        
 
@@ -427,59 +479,80 @@ void rentBook(char *filename) {
     printf("Enter the quantity to rent: ");
     scanf("%d", &quantity);
 
-    if (rent >= quantity) {
-        Book temp;
-
-        strcpy(temp.title, searchTitle);
-        strcpy(temp.author, author);
-        strcpy(temp.genre, genre);
-
-        temp.price = price;
-        temp.quantity_sale = sell;
-        temp.quantity_rent = rent-quantity;
-
-
-        makeChanges(filename,index, temp);
-
-        // TODO sales file
-
-        printf("Rent processed successfully.\n");
-    } 
-    else {
+    if(quantity>rent){
         printf("Insufficient quantity in stock.\n");
         return;
     }
+
+    int day;
+    printf("Enter number of days to rent: ");
+    scanf("%d", &day);
+
+    // POSSIBLE DEVELOPMENT
+    // ask buyer's contacts to remind them to return the book in time
+
+    char buf[256] = {0};
+    time_t rawtime = time(NULL);
+    // printf("%ld\n",rawtime);
+    // rawtime /=365*60*24*60; // years since eroch(?)
+    struct tm *ptm = localtime(&rawtime);
+    strftime(buf, BUF_LEN, "%D", ptm); // %D for day/month/year format 
+
+    // puts(buf);
+
+
+    Book temp;
+
+    strcpy(temp.title, searchTitle);
+    strcpy(temp.author, author);
+    strcpy(temp.genre, genre);
+
+    temp.price = price;
+    temp.quantity_sale = sell;
+    temp.quantity_rent = rent-quantity;
+
+    // make changes to the inventory
+    makeChanges(filename,index, temp);
+
+    // write into rent.txt
+    generateRentalReport(rentFileName,temp,quantity,buf);
+
+    // TODO report for the buyer
+
+    printf("Rent processed successfully.\n");
+
 }
 
-// bring back the book (opposite of renting)
-
-void generateSalesReport(Book *inventory, int numBooks) {
+void displayRentalReport(char *filename){
+    FILE *file = fopen(filename, "r");
     // Display sales report header
-    printf("Sales Report\n");
+    printf("Rent Report\n");
     printf("------------\n");
+    float total_rev = 0;
 
-    // Iterate over the inventory and display sales information for each book
-    for (int i = 0; i < numBooks; i++) {
-        printf("Title: %s\n", inventory[i].title);
-        printf("Author: %s\n", inventory[i].author);
-        printf("Quantity sold: %d\n", inventory[i].quantity_sale);
-        printf("Total sales amount: %.2f\n", inventory[i].price * inventory[i].quantity_sale);
+    char buffer[255];
+
+    while (fgets(buffer, sizeof(buffer), file) != NULL) {
+        printf("Title: %s", buffer);
+        fgets(buffer, sizeof(buffer), file);
+        printf("Author: %s", buffer);
+        fgets(buffer, sizeof(buffer), file);
+        printf("Quantity sold: %s", buffer);
+        fgets(buffer, sizeof(buffer), file);
+        printf("Total sales amount: %s", buffer);
         printf("------------\n");
     }
+
+    
 }
 
-void generateRentalReport(Book *inventory, int numBooks) {
-    // Display rental report header
-    printf("Rental Report\n");
-    printf("-------------\n");
 
-    // Iterate over the inventory and display rental information for each book
-    for (int i = 0; i < numBooks; i++) {
-        printf("Title: %s\n", inventory[i].title);
-        printf("Author: %s\n", inventory[i].author);
-        printf("Quantity rented: %d\n", inventory[i].quantity_rent);
-        printf("-------------\n");
-    }
+
+
+
+//TODO // bring back the book (opposite of renting)
+void returnRented(){
+
 }
 
 void displayMenu() {
@@ -489,11 +562,10 @@ void displayMenu() {
     printf("2. Update Book\n");
     printf("3. Get Book Information\n");
     printf("4. Process Sale\n");
-    printf("5. Calculate Total Amount\n");
-    printf("6. Rent Book\n");
-    printf("7. Generate Sales Report\n");
-    printf("8. Generate Rental Report\n");
-    // browse
+    printf("5. Rent Book\n");
+    printf("6. Browse Books\n");
+    printf("7. Display Sales Report\n");
+    printf("8. Display Rental Report\n");
     printf("9. Exit\n");
     printf("Enter your choice: ");
 }
@@ -501,6 +573,8 @@ void displayMenu() {
 int main() {
     // not absolute address
     char *fileName = "inventory.txt";
+    char *saleFileName = "sale.txt";
+    char *rentFileName = "rent.txt";
 
     // Book inventory[100]; // Assuming a maximum of 100 books in the inventory
 
@@ -537,21 +611,20 @@ int main() {
                 getBookInfo(fileName, numBooks);
                 break;
             case 4:
-                processSale(fileName);
+                processSale(fileName,saleFileName);
                 break;
             case 5:
-                // printf("Total amount: %.2f\n", calculateTotalAmount(inventory, numBooks));
+                processRent(fileName, rentFileName);
                 break;
-            case 6:
-                rentBook(fileName);
+            //case 6:
+            //    browse(fileName);
+            //    break;
+            case 7:
+                displaySaleReport(saleFileName);
                 break;
-            // case 7:
-            //     generateSalesReport(inventory, numBooks);
-            //     break;
             // case 8:
-            //     generateRentalReport(inventory, numBooks);
+            //     displayRentalReport(fileName, numBooks);
             //     break;
-            // browse
             case 9:
                 printf("Exiting...\n");
                 break;
