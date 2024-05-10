@@ -859,7 +859,7 @@ void sortRecords(char *filename, char *tofind, char ag ){
 
     // if fucntion was called for price sorting
     else{
-        int p; //price
+        float p; //price
         int s; // sell
         int r; // rent
 
