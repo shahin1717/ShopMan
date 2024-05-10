@@ -47,11 +47,11 @@ void writeBookToFile(FILE *file, Book book,int index){
 
     fputs("#\n", file); // separator between books
     fprintf(file,"%d: %s\n",index,book.title);
-    fprintf(file,"%d.1: %s\n",index,book.author);
-    fprintf(file,"%d.2: %s\n",index,book.genre);
-    fprintf(file,"%d.3: %0.2f\n",index,book.price);
-    fprintf(file,"%d.4: %d\n",index,book.quantity_sale);
-    fprintf(file,"%d.5: %d\n",index,book.quantity_rent);
+    fprintf(file,"Author: %s\n",book.author);
+    fprintf(file,"Genre: %s\n",book.genre);
+    fprintf(file,"Price: %0.2f\n",book.price);
+    fprintf(file,"Quantity for sale: %d\n",book.quantity_sale);
+    fprintf(file,"Quantity for rent: %d\n",book.quantity_rent);
 }
 
 // Function to add new books to the inventory
@@ -60,6 +60,7 @@ void appendBookToFile(char *fileName,int *numBooks) {
     // temporary book to store user input
     Book new;
     // Prompt the user to enter book details
+    printf("\n\t\033[35m Add book information:\033[0m\n");
     printf("Enter the title: ");
     fgets(new.title, sizeof(new.title), stdin);
     new.title[strcspn(new.title, "\n")] = '\0'; // Remove trailing newline character
@@ -964,8 +965,7 @@ void browseBooks(char *filename){
 
 // Function to display the main menu
 void displayMenu() {
-    printf("Main Menu\n");
-    printf("---------\n");
+    printf("\n\t\t\033[1;36;4mMain Menu\033[0m\n");
     printf("1. Add Book\n");
     printf("2. Update Book\n");
     printf("3. Get Book Information\n");
@@ -974,7 +974,7 @@ void displayMenu() {
     printf("6. browseBooks Books\n");
     printf("7. Display Sales Report\n");
     printf("8. Display Rental Report\n");
-    printf("9. Exit\n");
+    printf("\033[32m9. Exit\033[0m\n");
     printf("Enter your choice: ");
 }
 
@@ -1003,8 +1003,8 @@ int main() {
     fclose(inventoryFile);
 
     int choice;
-    displayMenu();
     do {
+        displayMenu();
         while(1){
             if(scanf("%d", &choice)!=1){
                 printf("\033[31;1mInvalid input.\033[0m Please enter a number!\nYour choice: ");
@@ -1043,7 +1043,7 @@ int main() {
                 displayRentalReport(rentFileName);
                 break;
             case 9:
-                printf("Exiting...\n");
+                printf("\n\t\t\033[31mExiting...\033[0m\n\n");
                 exit(0);
             default:
                 printf("\033[31;1mInvalid choice.\033[0m Please try again.\nYour choice: ");
