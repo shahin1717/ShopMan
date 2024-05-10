@@ -73,17 +73,38 @@ void appendBookToFile(char *fileName,int *numBooks) {
     fgets(new.genre, sizeof(new.genre), stdin);
     new.genre[strcspn(new.genre, "\n")] = '\0'; // Remove trailing newline character
 
-    // TODO: catch error here
     printf("Enter the price: ");
-    scanf(" %f", &new.price);
-    
-    // TODO: catch error here
-    printf("Enter the quantity for sale: ");
-    scanf("%d", &new.quantity_sale);
+    while(1){
+            if(scanf("%f", &new.price)!=1){
+                printf("\033[31;1mInvalid input.\033[0m Please enter a number!\nYour price: ");
+                fflush(stdin);
+            }
+            else{
+                break;
+            }
+        }
 
-    // TODO: catch error here
+    printf("Enter the quantity for sale: ");
+    while(1){
+            if(scanf("%d", &new.quantity_sale)!=1){
+                printf("\033[31;1mInvalid input.\033[0m Please enter a number!\nYour quantity for sale: ");
+                fflush(stdin);
+            }
+            else{
+                break;
+            }
+        }
+
     printf("Enter the quantity for rent: ");
-    scanf("%d", &new.quantity_rent);
+    while(1){
+            if(scanf("%d", &new.quantity_rent)!=1){
+                printf("\033[31;1mInvalid input.\033[0m Please enter a number!\nYour quantity for rent: ");
+                fflush(stdin);
+            }
+            else{
+                break;
+            }
+        }
 
     // Increment the number of books in the inventory
     (*numBooks)++;    
@@ -234,13 +255,37 @@ void updateBookInfo(char *filename) {
     temp.genre[strcspn(temp.genre, "\n")] = '\0'; // Remove trailing newline character
 
     printf("Enter the new price: ");
-    scanf("%f", &temp.price);
+    while(1){
+            if(scanf("%f", &temp.price)!=1){
+                printf("\033[31;1mInvalid input.\033[0m Please enter a number!\nYour price: ");
+                fflush(stdin);
+            }
+            else{
+                break;
+            }
+        }
 
     printf("Enter the new quantity for sale: ");
-    scanf("%d", &temp.quantity_sale);
+    while(1){
+            if(scanf("%d", &temp.quantity_sale)!=1){
+                printf("\033[31;1mInvalid input.\033[0m Please enter a number!\nYour quantity for sale: ");
+                fflush(stdin);
+            }
+            else{
+                break;
+            }
+        }
 
     printf("Enter the new quantity for rent: ");
-    scanf("%d", &temp.quantity_rent);
+    while(1){
+            if(scanf("%d", &temp.quantity_rent)!=1){
+                printf("\033[31;1mInvalid input.\033[0m Please enter a number!\nYour quantity for rent: ");
+                fflush(stdin);
+            }
+            else{
+                break;
+            }
+        }
 
     fclose(file);
 
@@ -944,16 +989,18 @@ void browseBooks(char *filename){
             printf("Which author's book you want?: ");
             fgets(author, sizeof(author), stdin);
             author[strcspn(author, "\n")] = '\0';
+            printf("\n");
             sortRecords(filename, author,'a');
             break;   
         case 2:
+            printf("\n");
             sortRecords(filename, " ", 'p');
             break;
         case 3:
             printf("Which genre book you want?: ");
             fgets(genre, sizeof(genre), stdin);
             genre[strcspn(genre, "\n")] = '\0';
-
+            printf("\n");
             sortRecords(filename, genre, 'g');
             break;
         default:
@@ -971,7 +1018,7 @@ void displayMenu() {
     printf("3. Get Book Information\n");
     printf("4. Process Sale\n");
     printf("5. Rent Book\n");
-    printf("6. browseBooks Books\n");
+    printf("6. Sort Books\n");
     printf("7. Display Sales Report\n");
     printf("8. Display Rental Report\n");
     printf("\033[32m9. Exit\033[0m\n");
