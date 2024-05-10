@@ -376,6 +376,10 @@ void getBookInfo(char *filename, int numBooks) {
 // writes into sale file, where all transactions are stored
 void generateSalesReport(char* filename, Book book, int quantity) {
     FILE *file = fopen(filename, "a");
+    if (file == NULL) {
+        perror("Error opening file");
+        return 1;
+    }
 
     fprintf(file,"%s\n",book.title);
     fprintf(file,"%s\n",book.author);
@@ -400,6 +404,10 @@ void processSale(char *filename, char *sellFileName) {
     searchTitle[strcspn(searchTitle, "\n")] = '\0'; // Remove trailing newline character
 
     FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        return 1;
+    }
     int index = searchBookInFile(file, searchTitle);
 
 
@@ -545,6 +553,10 @@ void findBestSellingBook(char *filename, char rent){
 // Function to display sales report
 void displaySaleReport(char *filename){
     FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        return 1;
+    }
     // Display sales report header
     printf("Sales Report\n");
     printf("------------\n");
@@ -578,6 +590,10 @@ void displaySaleReport(char *filename){
 // writes into rent file, where all transactions are stored
 void generateRentalReport(char* filename, Book book, int quantity, char *date, int days) {
     FILE *file = fopen(filename, "a");
+    if (file == NULL) {
+        perror("Error opening file");
+        return 1;
+    }
 
     fprintf(file,"%s\n",book.title);
     fprintf(file,"%s\n",book.author);
@@ -617,6 +633,10 @@ void processRent(char *filename, char *rentFileName) {
     searchTitle[strcspn(searchTitle, "\n")] = '\0'; // Remove trailing newline character
 
     FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        return 1;
+    }
     int index = searchBookInFile(file, searchTitle);
 
 
@@ -720,6 +740,10 @@ void processRent(char *filename, char *rentFileName) {
 void displayRentalReport(char *filename){
 
     FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        return 1;
+    }
     // Display sales report header
     printf("Rent Report\n");
     printf("------------\n");
@@ -773,6 +797,7 @@ void fillTemporaryBookDetails(Book *book, char *title, char *author, char *genre
 // Function to sort records
 void sortRecords(char *filename, char *tofind, char ag ){
     FILE *inventory = fopen(filename, "r");
+
 
     if (inventory == NULL) {
         printf("Error opening file.\n");
@@ -875,6 +900,10 @@ void sortRecords(char *filename, char *tofind, char ag ){
         for (int i = 0; i < numBooks; i++){
             // for each book
             FILE *fake = fopen("fake.txt", "r");
+                if (fake == NULL) {
+                    perror("Error opening file");
+                    return 1;
+                }
 
             for (int j = 0; j < numBooks-i; j++){
                 fgets(title, sizeof(title), fake);
@@ -937,7 +966,10 @@ void sortRecords(char *filename, char *tofind, char ag ){
             // delete from fake
             FILE *helper = fopen("helper.txt", "a"); //append
             FILE *fakee = fopen("fake.txt", "r"); //read
-
+            if (helper == NULL || fakee== NULL) {
+                perror("Error opening file");
+                return 1;
+            }
 
             for (int k = 0; k < smallest_index*6; k++){
                 fgets(buffer, sizeof(buffer), fakee);
