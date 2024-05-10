@@ -441,13 +441,12 @@ void processSale(char *filename, char *sellFileName) {
 
         printf("Sale processed successfully.\n");
 
-        // Как чек чтобы вывело плз
-        printf("______чек(?)_______");
-        printf("%s", searchTitle);
-        printf("%s", author);
-        printf("%f", price); 
-        printf("%d", quantity);
-        printf("%f", price*quantity); // total
+        printf("\t\t\033[1;32;4mSALE RECEIPT\033[0m\n");
+        printf("Title: %s\n", searchTitle);
+        printf("Author: %s\n", author);
+        printf("Price: %.2f\n", price); 
+        printf("Quanity: %d\n", quantity);
+        printf("Total: %.2f\n", price*quantity); // total
 
     } 
     else {
@@ -531,8 +530,7 @@ void displaySaleReport(char *filename){
         return;
     }
     // Display sales report header
-    printf("Sales Report\n");
-    printf("------------\n");
+    printf("\n\t\t\033[1;36;4mSALES REPORT\033[0m\n");
     float total_rev = 0;
 
     char buffer[255];
@@ -698,14 +696,13 @@ void processRent(char *filename, char *rentFileName) {
 
     printf("Rent processed successfully.\n");
 
-    // Как чек чтобы вывело плз
-    printf("______чек(?)_______");
-    printf("%s\n", searchTitle);
-    printf("%s\n", author);
-    printf("%f\n", price); 
-    printf("%d\n", quantity);
-    printf("%f\n", price*quantity); // total
-    printf("days %d\n", day);
+    printf("\t\t\033[1;32;4mRENT RECEIPT\033[0m\n");
+    printf("Title: %s\n", searchTitle);
+    printf("Author: %s\n", author);
+    printf("Price: %.2f\n", price); 
+    printf("Quantity: %d\n", quantity);
+    printf("Total: %.2f\n", price*quantity); // total
+    printf("Days for rent: %d\n", day);
 
 }
 
@@ -718,8 +715,7 @@ void displayRentalReport(char *filename){
         return;
     }
     // Display sales report header
-    printf("Rent Report\n");
-    printf("------------\n");
+    printf("\n\t\t\033[1;36;4mRENT REPORT\033[0m\n");
     float total_rev = 0;
 
     char buffer[255];
