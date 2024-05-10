@@ -906,6 +906,7 @@ void sortRecords(char *filename, char *tofind, char ag ){
                     r = atoi(quantity_rent);
 
                     fillTemporaryBookDetails(&temp_book, title, author, genre, p, s, r);
+                    continue;
                 }
                 else if(p<smallest){
                     smallest = p;
@@ -921,7 +922,10 @@ void sortRecords(char *filename, char *tofind, char ag ){
                     fillTemporaryBookDetails(&temp_book, title, author, genre, p, s, r);
 
                     smallest_index = j;
+                    continue;
                 }
+                fgets(quantity_sale, sizeof(quantity_sale), fake); // Read quant sale
+                fgets(quantity_rent, sizeof(quantity_rent), fake); // Read sell quantity
             }
 
             // print smallest
