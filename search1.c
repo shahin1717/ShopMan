@@ -1003,9 +1003,17 @@ int main() {
     fclose(inventoryFile);
 
     int choice;
+    displayMenu();
     do {
-        displayMenu();
-        scanf("%d", &choice);
+        while(1){
+            if(scanf("%d", &choice)!=1){
+                printf("\033[31;1mInvalid input.\033[0m Please enter a number!\nYour choice: ");
+                fflush(stdin);
+            }
+            else{
+                break;
+            }
+        }
         getchar(); // Consume the newline character
 
         switch (choice) {
@@ -1038,7 +1046,7 @@ int main() {
                 printf("Exiting...\n");
                 exit(0);
             default:
-                printf("Invalid choice. Please try again.\n");
+                printf("\033[31;1mInvalid choice.\033[0m Please try again.\nYour choice: ");
                 break;
         }
 
