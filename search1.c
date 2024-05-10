@@ -926,12 +926,12 @@ void sortRecords(char *filename, char *tofind, char ag ){
 
             // print smallest
             printf("___________________\n");
-            printf("%s\n", temp_book.title);
-            printf("%s\n", temp_book.author);
-            printf("%s\n", temp_book.genre);
-            printf("%f\n", temp_book.price);
-            printf("%d\n", temp_book.quantity_sale);
-            printf("%d", temp_book.quantity_rent);
+            printf("Title: %s\n", temp_book.title);
+            printf("Author: %s\n", temp_book.author);
+            printf("Genre: %s\n", temp_book.genre);
+            printf("Price: %.2f\n", temp_book.price);
+            printf("Quantity for sale: %d\n", temp_book.quantity_sale);
+            printf("Quantity for rent: %d\n", temp_book.quantity_rent);
             printf("___________________\n");
 
             fclose(fake);
