@@ -3,7 +3,8 @@
 #include <string.h>
 #include <time.h>
 #include <math.h>
-
+#include <stdbool.h>
+#include <ctype.h>
 // Define data structure for books
 typedef struct {
     int id;
@@ -40,80 +41,6 @@ void fillTemporaryBookDetails(Book *book, char *title, char *author, char *genre
 void sortRecords(char *filename, char *tofind, char ag );
 void browseBooks(char *filename);
 void displayMenu();
-
-int main() {
-    // not absolute address
-    char *fileName = "inventory.txt";
-    char *saleFileName = "sale.txt";
-    char *rentFileName = "rent.txt";
-
-    // Book inventory[100]; // Assuming a maximum of 100 books in the inventory
-
-    // Counts the initial number of books(line in a file) in inventory before starting the operations
-    numBooks = 0;
-
-    FILE *inventoryFile = fopen("inventory.txt","r+"); // r+ for both reading and writing
-    if (inventoryFile == NULL) {
-        perror("Error opening file");
-        return 1;
-    }
-    char buffer[255];
-    while(fgets(buffer, 255, inventoryFile) != NULL){
-        if (strcmp(buffer, "#\n") == 0){
-            numBooks ++;
-        } 
-    }
-    fclose(inventoryFile);
-
-    int choice;
-    do {
-        displayMenu();
-        scanf("%d", &choice);
-        getchar(); // Consume the newline character
-
-        switch (choice) {
-            case 1:
-                appendBookToFile(fileName, &numBooks);
-                break;
-            case 2:
-                updateBookInfo(fileName);
-                break;
-            case 3:
-                getBookInfo(fileName, numBooks);
-                break;
-            case 4:
-                processSale(fileName,saleFileName);
-                break;
-            case 5:
-                processRent(fileName, rentFileName);
-                break;
-            //case 6:
-            //    returnRent(fileName);
-            //    break;
-            case 7:
-                browseBooks(fileName);
-                break;
-            case 8:
-                displaySaleReport(saleFileName);
-                break;
-                
-            case 9:
-                displayRentalReport(rentFileName);
-                break;
-            case 10:
-                printf("Exiting...\n");
-                break;
-            default:
-                printf("Invalid choice. Please try again.\n");
-                break;
-        }
-
-        fflush(stdin); // after user inut a number they also input \n, get rid of it
-
-    } while (choice != 9);
-
-    return 0;
-}
 
 // Writes Book structure in the end of the inventory file
 void writeBookToFile(FILE *file, Book book,int index){
@@ -378,7 +305,7 @@ void generateSalesReport(char* filename, Book book, int quantity) {
     FILE *file = fopen(filename, "a");
     if (file == NULL) {
         perror("Error opening file");
-        return 1;
+        return;
     }
 
     fprintf(file,"%s\n",book.title);
@@ -406,7 +333,7 @@ void processSale(char *filename, char *sellFileName) {
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
         perror("Error opening file");
-        return 1;
+        return ;
     }
     int index = searchBookInFile(file, searchTitle);
 
@@ -555,7 +482,7 @@ void displaySaleReport(char *filename){
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
         perror("Error opening file");
-        return 1;
+        return;
     }
     // Display sales report header
     printf("Sales Report\n");
@@ -592,7 +519,7 @@ void generateRentalReport(char* filename, Book book, int quantity, char *date, i
     FILE *file = fopen(filename, "a");
     if (file == NULL) {
         perror("Error opening file");
-        return 1;
+        return ;
     }
 
     fprintf(file,"%s\n",book.title);
@@ -635,7 +562,7 @@ void processRent(char *filename, char *rentFileName) {
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
         perror("Error opening file");
-        return 1;
+        return ;
     }
     int index = searchBookInFile(file, searchTitle);
 
@@ -742,7 +669,7 @@ void displayRentalReport(char *filename){
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
         perror("Error opening file");
-        return 1;
+        return;
     }
     // Display sales report header
     printf("Rent Report\n");
@@ -902,7 +829,7 @@ void sortRecords(char *filename, char *tofind, char ag ){
             FILE *fake = fopen("fake.txt", "r");
                 if (fake == NULL) {
                     perror("Error opening file");
-                    return 1;
+                    return;
                 }
 
             for (int j = 0; j < numBooks-i; j++){
@@ -968,7 +895,7 @@ void sortRecords(char *filename, char *tofind, char ag ){
             FILE *fakee = fopen("fake.txt", "r"); //read
             if (helper == NULL || fakee== NULL) {
                 perror("Error opening file");
-                return 1;
+                return;
             }
 
             for (int k = 0; k < smallest_index*6; k++){
@@ -1044,10 +971,80 @@ void displayMenu() {
     printf("3. Get Book Information\n");
     printf("4. Process Sale\n");
     printf("5. Rent Book\n");
-    printf("6: Return Rented Book\n");
-    printf("7. browseBooks Books\n");
-    printf("8. Display Sales Report\n");
-    printf("9. Display Rental Report\n");
-    printf("10. Exit\n");
+    printf("6. browseBooks Books\n");
+    printf("7. Display Sales Report\n");
+    printf("8. Display Rental Report\n");
+    printf("9. Exit\n");
     printf("Enter your choice: ");
+}
+
+int main() {
+    // not absolute address
+    char *fileName = "inventory.txt";
+    char *saleFileName = "sale.txt";
+    char *rentFileName = "rent.txt";
+
+    // Book inventory[100]; // Assuming a maximum of 100 books in the inventory
+
+    // Counts the initial number of books(line in a file) in inventory before starting the operations
+    numBooks = 0;
+
+    FILE *inventoryFile = fopen("inventory.txt","r+"); // r+ for both reading and writing
+    if (inventoryFile == NULL) {
+        perror("Error opening file");
+        return 1;
+    }
+    char buffer[255];
+    while(fgets(buffer, 255, inventoryFile) != NULL){
+        if (strcmp(buffer, "#\n") == 0){
+            numBooks ++;
+        } 
+    }
+    fclose(inventoryFile);
+
+    int choice;
+    do {
+        displayMenu();
+        scanf("%d", &choice);
+        getchar(); // Consume the newline character
+
+        switch (choice) {
+            case 1:
+                appendBookToFile(fileName, &numBooks);
+                break;
+            case 2:
+                updateBookInfo(fileName);
+                break;
+            case 3:
+                getBookInfo(fileName, numBooks);
+                break;
+            case 4:
+                processSale(fileName,saleFileName);
+                break;
+            case 5:
+                processRent(fileName, rentFileName);
+                break;
+            case 6:
+                browseBooks(fileName);
+                break;
+            case 7:
+                displaySaleReport(saleFileName);
+                break;
+                
+            case 8:
+                displayRentalReport(rentFileName);
+                break;
+            case 9:
+                printf("Exiting...\n");
+                exit(0);
+            default:
+                printf("Invalid choice. Please try again.\n");
+                break;
+        }
+
+        fflush(stdin); // after user inut a number they also input \n, get rid of it
+
+    } while (1);
+
+    return 0;
 }

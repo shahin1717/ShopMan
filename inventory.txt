@@ -1,28 +1,337 @@
 #
 1: The Picture of Dorian Gray
-1.1: Oscar Wilde
-1.2: Philosophical
-1.3: 49.99
-1.4: 2
-1.5: 2
+Author: Oscar Wilde
+Genre: philosophical
+Price: $49.99
+Quantity for sale: 2
+Quantity for rent: 2
 #
-2: book two
-2.1: au two
-2.2: g two
-2.3: 8.00
-2.4: 3
-2.5: 1
+2: The Wonderful Wizard of Oz
+Author: L. Frank Baum
+Genre: fantasy
+Price: $9.99
+Quantity for sale: 0
+Quantity for rent: 1
 #
-3: book tree
-3.1: au two
-3.2: horror
-3.3: 13.90
-3.4: 2
-3.5: 5
+3: Alice's Adventures in Wonderland
+Author: Lewis Carroll
+Genre: children's literature
+Price: $7.99
+Quantity for sale: 3
+Quantity for rent: 2
 #
-4: aza
-Author: asdwsd
-Genre: wdd
-Price: 11.00
-Quantity Sale: 0
-Quantity rent: 1
+4: Pride and Prejudice
+Author: Jane Austen
+Genre: classic novel
+Price: $17.99
+Quantity for sale: 8
+Quantity for rent: 6
+#
+5: Heidi
+Author: Johanna Spyri
+Genre: children's literature
+Price: $12.99
+Quantity for sale: 10
+Quantity for rent: 5
+#
+6: The secret garden
+Author: Frances Hodgson Burn
+Genre: children's literature
+Price: $14.99
+Quantity for sale: 9
+Quantity for rent: 7
+#
+7: Matilda
+Author: Roald Dahl
+Genre: children's literature
+Price: $10.99
+Quantity for sale: 8
+Quantity for rent: 4
+#
+8: Little prince
+Author: Antoine de Saint-Exupéry
+Genre: children's literature
+Price: $8.99
+Quantity for sale: 7
+Quantity for rent: 5
+#
+9: Pippi longstocking
+Author: Astrid Lindgren
+Genre: children's literature
+Price: $10.99
+Quantity for sale: 2
+Quantity for rent: 1
+#
+10: Wonder
+Author: R.J. Palacio
+Genre: young adult
+Price: $9.99
+Quantity for sale: 4
+Quantity for rent: 3
+#
+11: The lord of the rings
+Author: J.R.R. Tolkien
+Genre: fantasy
+Price: $19.99
+Quantity for sale: 10
+Quantity for rent: 8
+#
+12: Hobbit
+Author: J.R.R. Tolkien
+Genre: science fiction
+Price: $14.20
+Quantity for sale: 6
+Quantity for rent: 2
+#
+13: Coraline
+Author: Neil Gaiman
+Genre: horror
+Price: $12.99
+Quantity for sale: 5
+Quantity for rent: 3
+#
+14: Charlie's chocolate factory
+Author: Roald Dahl
+Genre: children's literature
+Price: $5.99
+Quantity for sale: 7
+Quantity for rent: 4
+#
+15: Howl's moving castle
+Author: Diana Wynne Jones
+Genre: children's literature
+Price: $9.59
+Quantity for sale: 8
+Quantity for rent: 7
+#
+16: Charlotte's web
+Author: E.B. White
+Genre: children's literature
+Price: $7.99
+Quantity for sale: 9
+Quantity for rent: 8
+#
+17: Harry Potter
+Author: J.K. Rowling
+Genre: fantasy
+Price: $16.99
+Quantity for sale: 10
+Quantity for rent: 2
+#
+18: The giving tree
+Author: Shel Silverstein
+Genre: children's literature
+Price: $9.99
+Quantity for sale: 4
+Quantity for rent: 1
+#
+19: The story of Ferdinand
+Author: Munro Leaf
+Genre: children's literature
+Price: $4.99
+Quantity for sale: 1
+Quantity for rent: 1
+#
+20: The Cat in the Hat
+Author: Dr. Seuss
+Genre: children's literature
+Price: $7.99
+Quantity for sale: 8
+Quantity for rent: 3
+#
+21: Winnie the Pooh
+Author: A.A. Milne
+Genre: children's literature
+Price: $7.99
+Quantity for sale: 6
+Quantity for rent: 4
+#
+22: The tale of Peter Rabbit
+Author: Beatrix Potter
+Genre: children's literature
+Price: $8.99
+Quantity for sale: 5
+Quantity for rent: 2
+#
+23: The advetures of Pinocchio
+Author: Carlo Collodi
+Genre: children's literature
+Price: $9.99
+Quantity for sale: 3
+Quantity for rent: 1
+#
+24: Gulliver's Travels
+Author: Jonathan Swift
+Genre: science fiction
+Price: $12.99
+Quantity for sale: 1
+Quantity for rent: 1
+#
+25: The Adventures of Tom Sawyer
+Author: Mark Twain
+Genre: young adult
+Price: $8.99
+Quantity for sale: 4
+Quantity for rent: 1
+#
+26: Oliver Twist
+Author: Charles Dickens
+Genre: young adult
+Price: $10.99
+Quantity for sale: 5
+Quantity for rent: 3
+#
+27: Robinson Crusoe
+Author: Daniel Defoe
+Genre: adventure
+Price: $12.99
+Quantity for sale: 4
+Quantity for rent: 2
+#
+28: Jane Eyre
+Author: Charlotte Bronte
+Genre: classic novel
+Price: $13.99
+Quantity for sale: 3
+Quantity for rent: 4
+#
+29: A Tale of Two Cities
+Author: Charles Dickens
+Genre: historical fiction
+Price: $14.99
+Quantity for sale: 2
+Quantity for rent: 5
+#
+30: The last of the Mohicans
+Author: James Fenimore Cooper
+Genre: historical fiction
+Price: $10.99
+Quantity for sale: 3
+Quantity for rent: 1
+#
+31: The Alchemist
+Author: Ben Jonson
+Genre: spirituality, adventure
+Price: $9.99
+Quantity for sale: 6
+Quantity for rent: 5
+#
+32: A Christmas Carol
+Author: Charles Dickens
+Genre: mystery
+Price: $8.99
+Quantity for sale: 1
+Quantity for rent: 0
+#
+33: Little Women
+Author: Louisa May Alcott
+Genre: classic novel
+Price: $10.99
+Quantity for sale: 4
+Quantity for rent: 3
+#
+34: To Kill a Mockingbird
+Author: Harper Lee
+Genre: southern gothic bildungsroman
+Price: $9.99
+Quantity for sale: 4
+Quantity for rent: 2
+#
+35: The Adventures of Huckleberry Finn
+Author: Mark Twain
+Genre: adventure
+Price: $8.99
+Quantity for sale: 11
+Quantity for rent: 8
+#
+36: The Hound of the Baskervilles
+Author: Sir Arthur Conan Doyle
+Genre: detective
+Price: $7.99
+Quantity for sale: 6
+Quantity for rent: 3
+#
+37: Sherlock Holmes
+Author: Sir Arthur Conan Doyle
+Genre: detective
+Price: $10.99
+Quantity for sale: 12
+Quantity for rent: 10
+#
+38: The Lost World
+Author: Sir Arthur Conan Doyle
+Genre: adventure
+Price: $8.99
+Quantity for sale: 2
+Quantity for rent: 1
+#
+39: The Mysterious Affair At Styles
+Author: Agatha Christie
+Genre: detective
+Price: $9.99
+Quantity for sale: 5
+Quantity for rent: 4
+#
+40: The A.B.C. Murders
+Author: Agatha Christie
+Genre: detective
+Price: $14.99
+Quantity for sale: 11
+Quantity for rent: 7
+#
+41: Death On The Nile
+Author: Agatha Christie
+Genre: detective
+Price: $12.99
+Quantity for sale: 2
+Quantity for rent: 1
+#
+42: The Murder Of Roger Ackroyd
+Author: Agatha Christie
+Genre: detective
+Price: $8.99
+Quantity for sale: 6
+Quantity for rent: 3
+#
+43: Murder On The Orient Express
+Author: Agatha Christie
+Genre: detective
+Price: $10.99
+Quantity for sale: 1
+Quantity for rent: 1
+#
+44: 1984
+Author: George Orwell
+Genre: dystopia
+Price: $11.99
+Quantity for sale: 9
+Quantity for rent: 2
+#
+45: Animal Farm
+Author: George Orwell
+Genre: political satire
+Price: $12.99
+Quantity for sale: 9
+Quantity for rent: 6
+#
+46: The Great Gatsby
+Author: F. Scott Fitzger
+Genre: classic novel
+Price: $14.99
+Quantity for sale: 7
+Quantity for rent: 10
+#
+47: Dracula
+Author: Bram Stoker
+Genre: classic novel
+Price: $6.99
+Quantity for sale: 4
+Quantity for rent: 1
+#
+48: Les Misérables
+Author: Victor Hugo
+Genre: classic novel
+Price: $21.99
+Quantity for sale: 10
+Quantity for rent: 8
+
