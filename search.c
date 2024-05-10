@@ -27,11 +27,11 @@ void writeBookIntoFile(FILE *file, Book book,int index){
 
     fputs("#\n", file); // separator between books
     fprintf(file,"%d: %s\n",index,book.title);
-    fprintf(file,"%d.1: %s\n",index,book.author);
-    fprintf(file,"%d.2: %s\n",index,book.genre);
-    fprintf(file,"%d.3: %0.2f\n",index,book.price);
-    fprintf(file,"%d.4: %d\n",index,book.quantity_sale);
-    fprintf(file,"%d.5: %d\n",index,book.quantity_rent);
+    fprintf(file,"Author: %s\n",book.author);
+    fprintf(file,"Genre: %s\n",book.genre);
+    fprintf(file,"Price: %0.2f\n",book.price);
+    fprintf(file,"Quantity Sale: %d\n",book.quantity_sale);
+    fprintf(file,"Quantity rent: %d\n",book.quantity_rent);
 
 }
 
@@ -73,6 +73,7 @@ void addBook(char *fileName,int *numBooks) {
         perror("Error opening file");
         return;
     }
+
     writeBookIntoFile(file, new, *numBooks);
     fclose(file);
 
@@ -372,7 +373,7 @@ void processSale(char *filename, char *sellFileName) {
         printf("Sale processed successfully.\n");
 
         // Как чек чтобы вывело плз
-        printf("______чек(?)_______");
+        printf("");
         printf("%s", searchTitle);
         printf("%s", author);
         printf("%f", price); 
@@ -680,7 +681,7 @@ void fillTemp(Book *book, char *title, char *author, char *genre, float price, i
     book->quantity_rent = rent;
 }
 
-void sort13(char *filename, char *tofind, char ag ){
+void sort(char *filename, char *tofind, char ag ){
     FILE *inventory = fopen(filename, "r");
 
     if (inventory == NULL) {
@@ -893,17 +894,17 @@ void browse(char *filename){
             printf("Which author's book you want?: ");
             fgets(author, sizeof(author), stdin);
             author[strcspn(author, "\n")] = '\0';
-            sort13(filename, author,'a');
+            sort(filename, author,'a');
             break;   
         case 2:
-            sort13(filename, " ", 'p');
+            sort(filename, " ", 'p');
             break;
         case 3:
             printf("Which genre book you want?: ");
             fgets(genre, sizeof(genre), stdin);
             genre[strcspn(genre, "\n")] = '\0';
 
-            sort13(filename, genre, 'g');
+            sort(filename, genre, 'g');
             break;
         default:
             printf("Invalid input!");
@@ -913,8 +914,7 @@ void browse(char *filename){
 }
 
 void displayMenu() {
-    printf("Main Menu\n");
-    printf("---------\n");
+    printf("\t\t\033[1;4;36mMain Menu\033[0m\n");
     printf("1. Add Book\n");
     printf("2. Update Book\n");
     printf("3. Get Book Information\n");
@@ -939,7 +939,7 @@ int main() {
     // Counts the initial number of books(line in a file) in inventory before starting the operations
     numBooks = 0;
 
-    FILE *inventoryFile = fopen("inventory.txt","r+"); // r+ for both reading and writing
+    FILE *inventoryFile = fopen(fileName,"r+"); // r+ for both reading and writing
     if (inventoryFile == NULL) {
         perror("Error opening file");
         return 1;
@@ -949,7 +949,7 @@ int main() {
         if (strcmp(buffer, "#\n") == 0){
             numBooks ++;
         } 
-    }
+    } 
     fclose(inventoryFile);
 
     int choice;
@@ -962,34 +962,37 @@ int main() {
             case 1:
                 addBook(fileName, &numBooks);
                 break;
+
             case 2:
                 updateBook(fileName);
                 break;
+
             case 3:
                 getBookInfo(fileName, numBooks);
                 break;
+
             case 4:
                 processSale(fileName,saleFileName);
                 break;
+
             case 5:
                 processRent(fileName, rentFileName);
                 break;
-            //case 6:
-            //    returnRent(fileName);
-            //    break;
-            case 7:
+
+            case 6:
                 browse(fileName);
                 break;
-            case 8:
+            case 7:
                 displaySaleReport(saleFileName);
                 break;
                 
-            case 9:
+            case 8:
                 displayRentalReport(rentFileName);
                 break;
-            case 10:
+            case 9:
                 printf("Exiting...\n");
                 break;
+                
             default:
                 printf("Invalid choice. Please try again.\n");
                 break;
