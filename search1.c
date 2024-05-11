@@ -1084,7 +1084,7 @@ int main() {
     fclose(inventoryFile);
     int choice;
     do {
-        displayMenu();
+    displayMenu();
         while(1){
             if(scanf("%d", &choice)!=1){
                 printf("\033[31;1mInvalid input.\033[0m Please enter a number!\nYour choice: ");
