@@ -311,7 +311,7 @@ Quantity for rent: 2
 Author: George Orwell
 Genre: political satire
 Price: 12.99
-Quantity for sale: 9
+Quantity for sale: 8
 Quantity for rent: 6
 #
 46: The Great Gatsby
@@ -325,8 +325,8 @@ Quantity for rent: 10
 Author: Bram Stoker
 Genre: classic novel
 Price: 6.99
-Quantity for sale: 3
-Quantity for rent: 1
+Quantity for sale: 7
+Quantity for rent: 4
 #
 48: Les Misérables
 Author: Victor Hugo

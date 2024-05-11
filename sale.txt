@@ -2,3 +2,11 @@ Dracula
 Bram Stoker
 1
 6.990000
+Animal Farm
+George Orwell
+1
+12.990000
+Dracula
+Bram Stoker
+1
+6.990000

@@ -5,6 +5,7 @@
 #include <math.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include <dos.h>
 // Define data structure for books
 typedef struct {
     int id;
@@ -530,7 +531,7 @@ void displaySaleReport(char *filename){
         return;
     }
     // Display sales report header
-    printf("\n\t\t\033[1;36;4mSALES REPORT\033[0m\n");
+    printf("\n\t\t\033[1;36;4mSALES REPORT\033[0m\n"); 
     float total_rev = 0;
 
     char buffer[255];
@@ -552,7 +553,7 @@ void displaySaleReport(char *filename){
 
     fclose(file);
 
-    printf("Total rev: %f\n", total_rev);
+    printf("Total rev: %.2f\n", total_rev);
 
     // printf bestselling books
     findBestSellingBook(filename, 's');    
@@ -568,10 +569,10 @@ void generateRentalReport(char* filename, Book book, int quantity, char *date, i
 
     fprintf(file,"%s\n",book.title);
     fprintf(file,"%s\n",book.author);
-    // fprintf(file,"%s\n",book.genre);
+    fprintf(file,"%s\n",book.genre);
     fprintf(file,"%d\n",quantity); // Quantity sold
-    fprintf(file,"%f\n",book.price * quantity);  // total price
-    fprintf(file,"%s\n", date);
+    fprintf(file,"%.2f\n",book.price * (float)quantity);  // total price
+    fprintf(file,"%s", date);
     fprintf(file, "%d\n", days);
 
     // in case if in future price of the book will change
@@ -632,7 +633,7 @@ void processRent(char *filename, char *rentFileName) {
     fgets(buffer, sizeof(buffer), file); // price
     buffer[strcspn(buffer, "\n")] = '\0';
     char *cprice = extractStringFromLine(buffer);
-    float price = atof(cprice)*off; // 50% off
+    float price = (atof(cprice))/2; // 50% off
 
     fgets(buffer, sizeof(buffer), file); // quntity for sale
     buffer[strcspn(buffer, "\n")] = '\0';
@@ -665,13 +666,10 @@ void processRent(char *filename, char *rentFileName) {
     // ask buyer's contacts to remind them to return the book in time
 
     char buf[256] = {0};
-    time_t rawtime = time(NULL);
-    // printf("%ld\n",rawtime);
-    // rawtime /=365*60*24*60; // years since eroch(?)
-    struct tm *ptm = localtime(&rawtime);
-    strftime(buf, BUF_LEN, "%D", ptm); // %D for day/month/year format 
-
-    // puts(buf);
+    time_t t = time(NULL);
+    struct tm *tm = localtime(&t);
+    strcpy(buf, asctime(tm));
+    
 
 
     Book temp;
@@ -727,6 +725,9 @@ void displayRentalReport(char *filename){
         printf("Author: %s", buffer);
 
         fgets(buffer, sizeof(buffer), file);
+        printf("Genre: %s", buffer);
+
+        fgets(buffer, sizeof(buffer), file);
         printf("Quantity sold: %s", buffer);
 
         fgets(buffer, sizeof(buffer), file);
@@ -745,7 +746,7 @@ void displayRentalReport(char *filename){
 
     fclose(file);
 
-    printf("Total rev: %f\n", total_rev);
+    printf("Total rev: %.2f\n", total_rev);
 
     // printf bestselling books
     findBestSellingBook(filename, 'r');   
