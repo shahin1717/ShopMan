@@ -1083,17 +1083,14 @@ int main() {
     fclose(inventoryFile);
     int choice;
     do {
-    displayMenu();
-        while(1){
-            if(scanf("%d", &choice)!=1){
-                printf("\033[31;1mInvalid input.\033[0m Please enter a number!\nYour choice: ");
-                scanf("%*[^\n]"); // Clear input buffer
-                scanf("%*c"); 
+        displayMenu();
+        scanf("%d", &choice);
+        while(choice>9 || choice<1){
+                printf("\033[31;1mInvalid choice.\033[0m Please try again.\n");
+                printf("Enter your choice: ");
+                scanf("%*[^\n]"); // clear input buffer
+                scanf("%d", &choice);
             }
-            else{
-                break;
-            }
-        }
         getchar(); // Consume the newline character
 
         switch (choice) {
