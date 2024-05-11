@@ -372,6 +372,7 @@ void processSale(char *filename, char *sellFileName) {
 
         printf("Sale processed successfully.\n");
 
+
         // Как чек чтобы вывело плз
         printf("");
         printf("%s", searchTitle);
