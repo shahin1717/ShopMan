@@ -246,6 +246,7 @@ void updateBookInfo(char *filename) {
     int index = searchBookInFile(file, searchTitle );
 
     fflush(stdin);
+    
 
     strcpy(temp.title, searchTitle);
     // Prompt the user to update book details
