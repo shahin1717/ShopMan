@@ -124,7 +124,7 @@ void appendBookToFile(char *fileName,int *numBooks) {
 }
 
 // Function returns TITLE from 1: TITLE
-//                      AUTHOR from 1.1: AUTHOR
+//                      AUTHOR from Author: AUTHOR
 char* extractStringFromLine(char *line){
     
     char *sepPosition = strchr(line, ':');
