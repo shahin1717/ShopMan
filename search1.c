@@ -4,8 +4,7 @@
 #include <time.h>
 #include <math.h>
 #include <stdbool.h>
-#include <ctype.h>
-#include <dos.h>
+
 // Define data structure for books
 typedef struct {
     int id;
@@ -357,7 +356,7 @@ void generateSalesReport(char* filename, Book book, int quantity) {
 
     fprintf(file,"%s\n",book.title);
     fprintf(file,"%s\n",book.author);
-    // fprintf(file,"%s\n",book.genre);
+    fprintf(file,"%s\n",book.genre);
     fprintf(file,"%d\n",quantity); // Quantity sold
     fprintf(file,"%f\n",book.price * quantity);  // total price
 
@@ -552,6 +551,8 @@ void displaySaleReport(char *filename){
 
         fgets(buffer, sizeof(buffer), file);
         printf("Author: %s", buffer);
+        fgets(buffer, sizeof(buffer), file);
+        printf("Genre: %s", buffer);
 
         fgets(buffer, sizeof(buffer), file);
         printf("Quantity sold: %s", buffer);
@@ -597,6 +598,7 @@ void processRent(char *filename, char *rentFileName) {
 
     // title
     // author
+    // genre
     // number of book that was rent
     // price
     // date that is was given

@@ -325,7 +325,7 @@ Quantity for rent: 10
 Author: Bram Stoker
 Genre: classic novel
 Price: 6.99
-Quantity for sale: 6
+Quantity for sale: 5
 Quantity for rent: 5
 #
 48: Les Misérables
