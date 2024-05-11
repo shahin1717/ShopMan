@@ -77,7 +77,8 @@ void appendBookToFile(char *fileName,int *numBooks) {
     while(1){
             if(scanf("%f", &new.price)!=1){
                 printf("\033[31;1mInvalid input.\033[0m Please enter a number!\nYour price: ");
-                fflush(stdin);
+                scanf("%*[^\n]"); // Clear input buffer
+                scanf("%*c"); 
             }
             else{
                 break;
@@ -88,7 +89,8 @@ void appendBookToFile(char *fileName,int *numBooks) {
     while(1){
             if(scanf("%d", &new.quantity_sale)!=1){
                 printf("\033[31;1mInvalid input.\033[0m Please enter a number!\nYour quantity for sale: ");
-                fflush(stdin);
+                scanf("%*[^\n]"); 
+                scanf("%*c"); 
             }
             else{
                 break;
@@ -99,7 +101,8 @@ void appendBookToFile(char *fileName,int *numBooks) {
     while(1){
             if(scanf("%d", &new.quantity_rent)!=1){
                 printf("\033[31;1mInvalid input.\033[0m Please enter a number!\nYour quantity for rent: ");
-                fflush(stdin);
+                scanf("%*[^\n]"); 
+                scanf("%*c"); 
             }
             else{
                 break;
@@ -258,7 +261,8 @@ void updateBookInfo(char *filename) {
     while(1){
             if(scanf("%f", &temp.price)!=1){
                 printf("\033[31;1mInvalid input.\033[0m Please enter a number!\nYour price: ");
-                fflush(stdin);
+                scanf("%*[^\n]"); // Clear input buffer
+                scanf("%*c"); 
             }
             else{
                 break;
@@ -269,7 +273,8 @@ void updateBookInfo(char *filename) {
     while(1){
             if(scanf("%d", &temp.quantity_sale)!=1){
                 printf("\033[31;1mInvalid input.\033[0m Please enter a number!\nYour quantity for sale: ");
-                fflush(stdin);
+                scanf("%*[^\n]"); 
+                scanf("%*c"); 
             }
             else{
                 break;
@@ -280,7 +285,8 @@ void updateBookInfo(char *filename) {
     while(1){
             if(scanf("%d", &temp.quantity_rent)!=1){
                 printf("\033[31;1mInvalid input.\033[0m Please enter a number!\nYour quantity for rent: ");
-                fflush(stdin);
+                scanf("%*[^\n]"); // Clear input buffer
+                scanf("%*c"); 
             }
             else{
                 break;
@@ -998,7 +1004,8 @@ void browseBooks(char *filename){
     while(1){
             if(scanf("%d", &choice)!=1){
                 printf("\033[31;1mInvalid input.\033[0m Please enter a number!\nYour choice: ");
-                fflush(stdin);
+                scanf("%*[^\n]"); // Clear input buffer
+                scanf("%*c"); 
             }
             else{
                 break;
@@ -1080,7 +1087,8 @@ int main() {
         while(1){
             if(scanf("%d", &choice)!=1){
                 printf("\033[31;1mInvalid input.\033[0m Please enter a number!\nYour choice: ");
-                fflush(stdin);
+                scanf("%*[^\n]"); // Clear input buffer
+                scanf("%*c"); 
             }
             else{
                 break;
