@@ -386,6 +386,7 @@ void processSale(char *filename, char *sellFileName) {
         printf("Insufficient quantity in stock.\n");
         printf("There are only %d in the stock\n", sell);
         return;
+    
     }
 }
 
