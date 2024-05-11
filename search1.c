@@ -565,7 +565,7 @@ void displaySaleReport(char *filename){
 
     fclose(file);
 
-    printf("Total rev: %.2f\n", total_rev);
+    printf("\033[1mTotal rev: %.2f\033[0m\n", total_rev);
 
     // printf bestselling books
     findBestSellingBook(filename, 's');    
@@ -759,7 +759,7 @@ void displayRentalReport(char *filename){
 
     fclose(file);
 
-    printf("Total rev: %.2f\n", total_rev);
+    printf("\033[1mTotal rev: %.2f\033[0m\n", total_rev);
 
     // printf bestselling books
     findBestSellingBook(filename, 'r');   
@@ -1074,7 +1074,6 @@ int main() {
         } 
     }
     fclose(inventoryFile);
-    
     int choice;
     do {
         displayMenu();
