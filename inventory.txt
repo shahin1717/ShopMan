@@ -304,7 +304,7 @@ Quantity for rent: 1
 Author: George Orwell
 Genre: dystopia
 Price: 11.99
-Quantity for sale: 9
+Quantity for sale: 5
 Quantity for rent: 2
 #
 45: Animal Farm
@@ -325,8 +325,8 @@ Quantity for rent: 10
 Author: Bram Stoker
 Genre: classic novel
 Price: 6.99
-Quantity for sale: 7
-Quantity for rent: 4
+Quantity for sale: 6
+Quantity for rent: 3
 #
 48: Les Misérables
 Author: Victor Hugo

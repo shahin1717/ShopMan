@@ -531,7 +531,7 @@ void displaySaleReport(char *filename){
         return;
     }
     // Display sales report header
-    printf("\n\t\t\033[1;36;4mSALES REPORT\033[0m\n"); 
+    printf("\n\t\t\033[1;36;4mSALES REPORT\033[0m\n\n"); 
     float total_rev = 0;
 
     char buffer[255];
@@ -975,14 +975,22 @@ void browseBooks(char *filename){
     char author[255];
     char genre [255];
 
-    printf("Sort by:\n");
+    printf("\n\t\t\033[1;36;4mSort by:\033[0m\n");
     printf("1. Author\n");
     printf("2. Price (increasing)\n");
     printf("3. Genre\n");
 
     printf("Enter your choice: ");
 
-    scanf("%d", &choice);
+    while(1){
+            if(scanf("%d", &choice)!=1){
+                printf("\033[31;1mInvalid input.\033[0m Please enter a number!\nYour choice: ");
+                fflush(stdin);
+            }
+            else{
+                break;
+            }
+        }
     getchar(); // Consume the newline character
 
     switch (choice) {
@@ -992,10 +1000,13 @@ void browseBooks(char *filename){
             author[strcspn(author, "\n")] = '\0';
             printf("\n");
             sortRecords(filename, author,'a');
+            printf("\n\t\033[3;32m     Sotring completed!\033[0m\n");
             break;   
         case 2:
             printf("\n");
             sortRecords(filename, " ", 'p');
+            printf("\n\t\033[3;32m     Sotring completed!\033[0m\n");
+
             break;
         case 3:
             printf("Which genre book you want?: ");
@@ -1003,9 +1014,10 @@ void browseBooks(char *filename){
             genre[strcspn(genre, "\n")] = '\0';
             printf("\n");
             sortRecords(filename, genre, 'g');
+            printf("\n\t\033[3;32m     Sotring completed!\033[0m\n");
             break;
         default:
-            printf("Invalid input!");
+            printf("\033[31;1mInvalid choice!\033[0m Please try again\n");
             browseBooks(filename);
             return;
     }
@@ -1049,7 +1061,7 @@ int main() {
         } 
     }
     fclose(inventoryFile);
-
+    
     int choice;
     do {
         displayMenu();
