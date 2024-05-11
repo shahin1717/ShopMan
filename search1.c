@@ -1082,7 +1082,7 @@ int main() {
     }
     fclose(inventoryFile);
     int choice;
-        displayMenu();
+    displayMenu();
     do {
         while(1){
             if(scanf("%d", &choice)!=1){
