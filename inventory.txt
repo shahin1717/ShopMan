@@ -297,7 +297,7 @@ Quantity for rent: 3
 Author: Agatha Christie
 Genre: detective
 Price: 10.99
-Quantity for sale: 1
+Quantity for sale: 2
 Quantity for rent: 1
 #
 44: 1984
@@ -312,13 +312,13 @@ Author: George Orwell
 Genre: political satire
 Price: 12.99
 Quantity for sale: 8
-Quantity for rent: 6
+Quantity for rent: 5
 #
 46: The Great Gatsby
 Author: F. Scott Fitzger
 Genre: classic novel
 Price: 14.99
-Quantity for sale: 7
+Quantity for sale: 6
 Quantity for rent: 10
 #
 47: Dracula
@@ -326,7 +326,7 @@ Author: Bram Stoker
 Genre: classic novel
 Price: 6.99
 Quantity for sale: 6
-Quantity for rent: 3
+Quantity for rent: 5
 #
 48: Les Misérables
 Author: Victor Hugo

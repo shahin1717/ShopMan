@@ -470,6 +470,7 @@ void findBestSellingBook(char *filename, char rent){
 
     int numSoldBooks = 0;
 
+
     char buffer[255];
     char title[255];
 
@@ -480,6 +481,7 @@ void findBestSellingBook(char *filename, char rent){
         strcpy(title, buffer);
         
         fgets(buffer, sizeof(buffer), file); // author
+        fgets(buffer, sizeof(buffer), file); // genre
         fgets(buffer, sizeof(buffer), file); // quantity
 
         int quantity = atoi(buffer);
@@ -519,8 +521,17 @@ void findBestSellingBook(char *filename, char rent){
             strcpy(best_selling_title, books[i].title);
         }
     }
+    switch (rent)
+    {
+    case 's':
+        printf("The best selling book is: %s\n\n", best_selling_title);
+        break;
+    
+    case 'r':
+        printf("The best renting book is: %s\n\n", best_selling_title);
+        break;
+    }
 
-    printf("The best selling book is: %s\n\n", best_selling_title);
 }
 
 // Function to display sales report

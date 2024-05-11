@@ -1,4 +1,0 @@
-functionName
-void func(int argument_name)
-
-int localVa
