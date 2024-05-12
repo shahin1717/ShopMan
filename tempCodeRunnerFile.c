@@ -1,1 +1,2 @@
-date
+scanf("%*[^\n]"); // clear input buffer
+                

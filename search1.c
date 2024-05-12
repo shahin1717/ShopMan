@@ -1089,8 +1089,10 @@ int main() {
         while(choice>9 || choice<1){
                 printf("\033[31;1mInvalid choice.\033[0m Please try again.\n");
                 printf("Enter your choice: ");
-                scanf("%*[^\n]"); // clear input buffer
+                scanf("%*[^\n]"); // Clear input buffer
+                scanf("%*c");
                 scanf("%d", &choice);
+                
             }
         getchar(); // Consume the newline character
 
