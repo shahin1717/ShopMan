@@ -335,15 +335,15 @@ void getBookInfo(char *filename, int numBooks) {
     char *genre = extractStringFromLine(buffer);
     printf("Genre: %s\n", genre);
 
-    fgets(buffer, sizeof(buffer), file); // Read the next line (genre line)
+    fgets(buffer, sizeof(buffer), file); // Read the next line (price line)
     char *price = extractStringFromLine(buffer);
     printf("Price: %s\n", price);
 
-    fgets(buffer, sizeof(buffer), file); // Read the next line (genre line)
+    fgets(buffer, sizeof(buffer), file); // Read the next line (sale line)
     char *sale = extractStringFromLine(buffer);
     printf("Quantity for sale: %s\n", sale);
 
-    fgets(buffer, sizeof(buffer), file); // Read the next line (genre line)
+    fgets(buffer, sizeof(buffer), file); // Read the next line (rent line)
     char *rent = extractStringFromLine(buffer);
     printf("Quantity for rent: %s\n", rent);
 
