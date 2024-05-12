@@ -1123,10 +1123,10 @@ int main() {
                 displayRentalReport(rentFileName);
                 break;
             case 9:
-                printf("\n\t\t\033[31mExiting...\033[0m\n\n");
+                printf("\n\t\t\033[32mExiting...\033[0m\n\n");
                 exit(0);
             default:
-                printf("\033[31;1mInvalid choice.\033[0m Please try again.\nYour choice: ");
+                //printf("\033[31;1mInvalid choice.\033[0m Please try again.\nYour choice: ");
                 break;
         }
 
