@@ -1027,7 +1027,6 @@ void browseBooks(char *filename){
             printf("\n");
             sortRecords(filename, " ", 'p');
             printf("\n\t\033[3;32m     Sotring completed!\033[0m\n");
-
             break;
         case 3:
             printf("Which genre book you want?: ");
