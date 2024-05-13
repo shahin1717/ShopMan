@@ -256,7 +256,7 @@ Author: Sir Arthur Conan Doyle
 Genre: detective
 Price: 10.99
 Quantity for sale: 12
-Quantity for rent: 10
+Quantity for rent: 9
 #
 38: The Lost World
 Author: Sir Arthur Conan Doyle
@@ -297,7 +297,7 @@ Quantity for rent: 3
 Author: Agatha Christie
 Genre: detective
 Price: 10.99
-Quantity for sale: 2
+Quantity for sale: 1
 Quantity for rent: 1
 #
 44: 1984

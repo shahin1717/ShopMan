@@ -245,7 +245,11 @@ void updateBookInfo(char *filename) {
     searchTitle[strcspn(searchTitle, "\n")] = '\0'; // Remove trailing newline character
 
     int index = searchBookInFile(file, searchTitle );
-
+    if (index < 0){
+        printf("Book not found in the inventory.\n");
+        return;
+    
+    }
     fflush(stdin);
     
 
