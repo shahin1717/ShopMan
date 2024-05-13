@@ -319,7 +319,9 @@ void getBookInfo(char *filename, int numBooks) {
     }
 
     int index = searchBookInFile(file, searchTitle);
-
+    if (index == -1){
+        printf("Book not found in the inventory.\n");
+        return;}
      char buffer[255];
 
     printf("_________________________\n");
